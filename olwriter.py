@@ -279,11 +279,29 @@ def getSymbolAsStyle(symbol, stylesFolder):
             color = getRGBAColor(props["color"], alpha) 
             style = "stroke: %s" % (getStrokeStyle(color, props["penstyle"] != "solid", props["width"]))
         elif isinstance(sl, QgsSimpleFillSymbolLayerV2):
-            borderColor =  getRGBAColor(props["color_border"], alpha) 
-            fillColor =  getRGBAColor(props["color"], alpha)                                        
+
+            fillColor =  getRGBAColor(props["color"], alpha)
+
+            # for old version
+            if 'color_border' in props:
+                borderColor =  getRGBAColor(props["color_border"], alpha)
+            else:
+                borderColor =  getRGBAColor(props["outline_color"], alpha)
+
+            if 'style_border' in props:
+                borderStyle = props["style_border"]
+            else:
+                borderStyle = props["outline_style"]
+
+            if 'width_border' in props:
+                borderWidth = props["width_border"]
+            else:
+                borderWidth = props["outline_width"]
+
+
             style = ('''stroke: %s, 
                         fill: %s''' % 
-                    (getStrokeStyle(borderColor, props["style_border"] != "solid", props["width_border"]),
+                    (getStrokeStyle(borderColor, borderStyle != "solid", borderWidth),
                      getFillStyle(fillColor)))
         else:
             style = ""
