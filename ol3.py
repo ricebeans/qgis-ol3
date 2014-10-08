@@ -21,11 +21,11 @@ class OL3Plugin:
             QIcon(":/plugins/qgis2ol/icons/ol.png"),
             u"Create OpenLayers map", self.iface.mainWindow())
         self.action.triggered.connect(self.run)
-        
-        self.iface.addPluginToMenu(u"&Export to Open Layers", self.action)
+
+        self.iface.addPluginToWebMenu(u"&Export to Open Layers", self.action)
 
     def unload(self):
-        self.iface.removePluginMenu(u"&Export to Open Layers", self.action)
+        self.iface.removePluginWebMenu(u"&Export to Open Layers", self.action)
     
     def run(self):
         dlg = MainDialog()
