@@ -112,12 +112,18 @@ def bounds(useCanvas, layers):
         canvas = iface.mapCanvas()
         canvasCrs = canvas.mapRenderer().destinationCrs()    
         transform = QgsCoordinateTransform(canvasCrs, QgsCoordinateReferenceSystem("EPSG:3857"))
-        extent = transform.transform(canvas.extent())
+        try:
+            extent = transform.transform(canvas.extent())
+        except QgsCsException:
+            extent = QgsRectangle(-20026376.39, -20048966.10, 20026376.39,20048966.10)
     else:
         extent = None
         for layer in layers:
             transform = QgsCoordinateTransform(layer.crs(), QgsCoordinateReferenceSystem("EPSG:3857"))
-            layerExtent = transform.transform(layer.extent())
+            try:
+                layerExtent = transform.transform(layer.extent())
+            except QgsCsException:
+                layerExtent = QgsRectangle(-20026376.39, -20048966.10, 20026376.39,20048966.10)
             if extent is None:
                 extent = layerExtent
             else:
