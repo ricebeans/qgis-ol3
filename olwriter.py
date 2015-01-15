@@ -150,7 +150,7 @@ def layerToJavascript(layer, scaleVisibility):
             url = re.search(r"url=(.*?)(?:&|$)", source).groups(0)[0]
             return '''var lyr_%(n)s = new ol.layer.Tile({
                         source: new ol.source.TileWMS(({
-                          url: %(url)s,
+                          url: "%(url)s",
                           params: {"LAYERS": "%(layers)s", "TILED": "true"},
                         })),
                         title: "%(name)s"
