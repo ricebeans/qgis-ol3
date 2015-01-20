@@ -282,8 +282,24 @@ def getSymbolAsStyle(symbol, stylesFolder):
             shutil.copy(sl.path(), path)                                   
             style = "image: %s" % getIcon(path, sl.size())
         elif isinstance(sl, QgsSimpleLineSymbolLayerV2):
-            color = getRGBAColor(props["color"], alpha) 
-            style = "stroke: %s" % (getStrokeStyle(color, props["penstyle"] != "solid", props["width"]))
+
+            # Check for old version
+            if 'color' in props:
+                color = getRGBAColor(props["color"], alpha)
+            else:
+                color = getRGBAColor(props["line_color"], alpha)
+
+            if 'width' in props:
+                line_width = props["width"]
+            else:
+                line_width = props["line_width"]
+
+            if 'penstyle' in props:
+                line_style = props["penstyle"]
+            else:
+                line_style = props["line_style"]
+
+            style = "stroke: %s" % (getStrokeStyle(color, line_style != "solid", line_width))
         elif isinstance(sl, QgsSimpleFillSymbolLayerV2):
 
             fillColor =  getRGBAColor(props["color"], alpha)
