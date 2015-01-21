@@ -31,8 +31,6 @@ Current version includes the following features:
 
 - Automatically minifies GeoJSON output files and removes unused attributes.
 
-- Support for QGIS groups, which are replicated in the OL3 map.
-
 - Template-based, so new templates can be easily be created
 
 - Add highlight function to highlight features when passing the mouse pointer over them.
