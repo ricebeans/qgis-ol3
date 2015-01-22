@@ -1,3 +1,4 @@
+import codecs
 import os
 import re
 import math
@@ -90,7 +91,7 @@ def writeLayersAndGroups(layers, groups, visible, folder, settings):
     visibility = "\n".join(["%s.setVisible(%s);" % (layer, str(v).lower()) for layer, v in zip(mapLayers[1:], visible)])
     layersList = "var layersList = [%s];" % ",".join([layer for layer in mapLayers]) 
     path = os.path.join(folder, "layers", "layers.js")  
-    with open(path, "w") as f: 
+    with codecs.open(path, "w","utf-8") as f:
         f.write(baseLayer + "\n")
         f.write(layerVars + "\n")
         f.write(groupVars + "\n")
