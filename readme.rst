@@ -23,6 +23,8 @@ Current version includes the following features:
 
 - Add layers list.
 
+- Basic support for groups.
+
 - Add scale bar.
 
 - Add feature info popup for selected layers, based on a given field, on hover or on click.
@@ -36,3 +38,10 @@ Current version includes the following features:
 - Add highlight function to highlight features when passing the mouse pointer over them.
 
 Usage is documented `here <./doc/usage.rst>`_.
+
+JavaScript libraries used by exported page
+==========================================
+
+- The generated code uses`OL3 <http://openlayers.org/>`_,
+`OL3 LayerSwitcher <https://github.com/walkermatt/ol3-layerswitcher/>`_
+and ` jQuery <http://jquery.com/>`_
