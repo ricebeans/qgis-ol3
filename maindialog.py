@@ -140,7 +140,10 @@ class MainDialog(QDialog, Ui_MainDialog):
                     groupLayers.append(layer)
                     layers.append(layer)
                     popup.append(utils.NO_POPUP)
-                visible.append(item.visible)
+                    if item.visible:
+                        visible.append(True)
+                    else:
+                        visible.append(False)
                 groups[group] = groupLayers[::-1]
 
         return layers[::-1], groups, popup[::-1], visible[::-1]

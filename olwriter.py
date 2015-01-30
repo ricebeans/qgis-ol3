@@ -84,27 +84,36 @@ def writeLayersAndGroups(layers, groups, visible, folder, settings):
                 group))
         for layer in groupLayers:
             groupedLayers[layer.id()] = safeName(group)
-    mapLayers = ["baseLayer"] 
+    mapLayers = ["baseLayer"]
     usedGroups = []
+    for layer in layers:
+        mapLayers.append("lyr_" + safeName(layer.name()))
+    visibility = "\n".join(["%s.setVisible(%s);" % (layer, str(v).lower()) for layer, v in zip(mapLayers[1:], visible)])
+
+    #ADD Group
+    group_list = ["baseLayer"]
+    no_group_list = []
     for layer in layers:
         if layer.id() in groupedLayers:
             groupName = groupedLayers[layer.id()]
             if groupName not in usedGroups:
-                mapLayers.append("group_" + safeName(groupName))
+                group_list.append("group_" + safeName(groupName))
                 usedGroups.append(groupName)
         else:
-            mapLayers.append("lyr_" + safeName(layer.name()))
-    visibility = "\n".join(["%s.setVisible(%s);" % (layer, str(v).lower()) for layer, v in zip(mapLayers[1:], visible)])
-    layersList = "var layersList = [%s];" % ",".join([layer for layer in mapLayers]) 
-    path = os.path.join(folder, "layers", "layers.js")  
+            no_group_list.append("lyr_" + safeName(layer.name()))
+
+    layersList = "var layersList = [%s];" % ",".join([layer for layer in (group_list+no_group_list)])
+
+    path = os.path.join(folder, "layers", "layers.js")
     with codecs.open(path, "w","utf-8") as f:
         f.write(baseLayer + "\n")
         f.write(layerVars + "\n")
         f.write(groupVars + "\n")
         f.write(visibility + "\n")
-        f.write(layersList)
+        f.write(layersList + "\n")
+        #f.write(write_group_list)
 
-    
+
 def replaceInTemplate(template, values):
     path = os.path.join(os.path.dirname(__file__), "templates", template)
     with open(path) as f:
