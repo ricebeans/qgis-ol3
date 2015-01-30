@@ -11,11 +11,15 @@ from PyQt4.QtGui import *
 from utils import ALL_ATTRIBUTES
 
 baseLayers  = {
-    "Stamen watercolor": "new ol.layer.Tile({title: 'Stamen watercolor', source: new ol.source.Stamen({layer: 'watercolor'})});",
-    "Stamen toner": "new ol.layer.Tile({title: 'Stamen toner', source: new ol.source.Stamen({layer: 'toner'})});",
-    "OSM": "new ol.layer.Tile({title: 'OSM', source: new ol.source.OSM()});",
-    "MapQuest": "new ol.layer.Tile({title: 'MapQuest', source: new ol.source.MapQuest({layer: 'sat'})});"
+    "Stamen watercolor": "new ol.layer.Tile({title: 'Stamen watercolor', source: new ol.source.Stamen({layer: 'watercolor'})})",
+    "Stamen toner": "new ol.layer.Tile({title: 'Stamen toner', source: new ol.source.Stamen({layer: 'toner'})})",
+    "OSM": "new ol.layer.Tile({title: 'OSM', source: new ol.source.OSM()})",
+    "MapQuest": "new ol.layer.Tile({title: 'MapQuest', source: new ol.source.MapQuest({layer: 'sat'})})"
 }
+
+baseLayerGroup = "var baseLayer = new ol.layer.Group({'title': 'Base maps',layers: [%s]});"
+
+
 
 def writeOL(layers, groups, popup, visible, settings, folder): 
     QApplication.setOverrideCursor(QCursor(Qt.WaitCursor))
@@ -42,7 +46,7 @@ def writeOL(layers, groups, popup, visible, settings, folder):
         if settings["Appearance"]["Add scale bar"]:
             controls.append("new ol.control.ScaleLine({})")
         if settings["Appearance"]["Add layers list"]:
-            controls.append('new Boundless.LayersControl({groups: {default: {title: "Layers"}}})')
+            controls.append('new ol.control.LayerSwitcher({tipLabel: "Layers"})')
         mapbounds = bounds(settings["Scale/Zoom"]["Extent"] == "Canvas extent", layers) 
         mapextent = "extent: %s," % mapbounds if settings["Scale/Zoom"]["Restrict to extent"] else ""
         maxZoom = int(settings["Scale/Zoom"]["Max zoom level"])
@@ -65,7 +69,9 @@ def writeOL(layers, groups, popup, visible, settings, folder):
         QApplication.restoreOverrideCursor() 
         
 def writeLayersAndGroups(layers, groups, visible, folder, settings):
-    baseLayer = "var baseLayer = " + baseLayers[settings["Appearance"]["Base layer"]]   
+
+    baseLayer = baseLayerGroup % baseLayers[settings["Appearance"]["Base layer"]]
+
     scaleVisibility = settings["Scale/Zoom"]["Use layer scale dependent visibility"]
     layerVars = "\n".join([layerToJavascript(layer, scaleVisibility) for layer in layers]) 
     groupVars = ""

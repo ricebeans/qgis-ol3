@@ -6,15 +6,23 @@
     <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <link rel="stylesheet" href="./resources/bootstrap.min.css">
     <link rel="stylesheet" href="./resources/ol.css">
-    <link rel="stylesheet" href="./resources/boundless.css">
+    <link rel="stylesheet" href="./resources/ol3-layerswitcher.css">
+
+
     <style>
-      html, body, #map {
-        height: 100%;
-        width: 100%;
-        overflow: hidden;
-      }
+      html, body {
+          height: 100%;
+          padding: 0;
+          margin: 0;
+          font-family: sans-serif;
+          font-size: small;
+        }
+        #map {
+          width: 100%;
+          height: 100%;
+        }
+
       .ol-popup {
         display: none;
         position: absolute;
@@ -46,7 +54,8 @@
       }
     </style>
     <script src="./resources/ol.js"></script>
-    <script src="./resources/boundless.js"></script>
+    <script src="./resources/ol3-layerswitcher.js"></script>
+
     @GEOJSONVARS@
     @STYLEVARS@
   <script src="./layers/layers.js" type="text/javascript"></script> 
@@ -60,7 +69,6 @@
         </div>  
     </div>
     <script src="./resources/jquery.min.js"></script>
-    <script src="./resources/bootstrap.min.js"></script>
     <script>
       var container = document.getElementById('popup');
       var content = document.getElementById('popup-content');
