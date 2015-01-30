@@ -163,7 +163,7 @@ class TreeGroupItem(QTreeWidgetItem):
         self.visibleItem = QTreeWidgetItem(self)
         self.visibleCheck = QCheckBox()
         self.visibleCheck.setChecked(True)
-        self.visibleItem.setText(0, "Visible")
+        self.visibleItem.setText(0, "Layers visibility")
         self.addChild(self.visibleItem)
         tree.setItemWidget(self.visibleItem, 1, self.visibleCheck)
 
