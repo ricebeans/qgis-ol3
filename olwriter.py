@@ -79,7 +79,7 @@ def writeLayersAndGroups(layers, groups, visible, folder, settings):
     for group, groupLayers in groups.iteritems():        
         groupVars +=  ('''var %s = new ol.layer.Group({
                                 layers: [%s], 
-                                title: "%s"});''' % 
+                                title: "%s"});\n''' %
                 ("group_" + safeName(group), ",".join(["lyr_" + safeName(layer.name()) for layer in groupLayers]),
                 group))
         for layer in groupLayers:
