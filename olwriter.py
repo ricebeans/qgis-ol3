@@ -274,7 +274,7 @@ def exportStyles(layers, folder):
             
         path = os.path.join(stylesFolder, safeName(layer.name()) + "_style.js")  
 
-        with open(path, "w") as f: 
+        with codecs.open(path, "w","utf-8") as f:
             f.write('''%(defs)s
                     var styleCache_%(name)s={}
                     var style_%(name)s = %(style)s;''' % 
