@@ -201,6 +201,8 @@ def exportStyles(layers, folder):
     stylesFolder = os.path.join(folder, "styles")
     QDir().mkpath(stylesFolder)
     for layer in layers:
+        # Check for layer's transparency
+        layer_transparency = layer.layerTransparency()
         if layer.type() != layer.VectorLayer:
             continue
         labelsEnabled = str(layer.customProperty("labeling/enabled")).lower() == "true"
@@ -214,13 +216,13 @@ def exportStyles(layers, folder):
             renderer = layer.rendererV2()
             if isinstance(renderer, QgsSingleSymbolRendererV2):
                 symbol = renderer.symbol()
-                style = "var style = " + getSymbolAsStyle(symbol, stylesFolder)  
+                style = "var style = " + getSymbolAsStyle(symbol, stylesFolder, layer_transparency)
                 value = 'var value = ""'              
             elif isinstance(renderer, QgsCategorizedSymbolRendererV2):                
                 defs += "var categories_%s = {" % safeName(layer.name())                
                 cats = []
                 for cat in renderer.categories():
-                    cats.append('"%s": %s' % (cat.value(), getSymbolAsStyle(cat.symbol(), stylesFolder)))
+                    cats.append('"%s": %s' % (cat.value(), getSymbolAsStyle(cat.symbol(), stylesFolder,layer_transparency)))
                 defs +=  ",\n".join(cats) + "};"     
                 value = 'var value = feature.get("%s");' %  renderer.classAttribute()         
                 style = '''var style = categories_%s[value]'''  % (safeName(layer.name()))
@@ -229,7 +231,7 @@ def exportStyles(layers, folder):
                 defs += "var %s = [" % varName               
                 ranges = []
                 for ran in renderer.ranges():
-                    symbolstyle = getSymbolAsStyle(ran.symbol(), stylesFolder)
+                    symbolstyle = getSymbolAsStyle(ran.symbol(), stylesFolder,layer_transparency)
                     ranges.append('[%f, %f, %s]' % (ran.lowerValue(), ran.upperValue(), symbolstyle))
                 defs += ",\n".join(ranges) + "];" 
                 value = 'var value = feature.get("%s");' %  renderer.classAttribute()                
@@ -284,9 +286,12 @@ def getRGBAColor(color, alpha):
     return '"rgba(%s)"' % ",".join([r, g, b, str(alpha)])
 
 
-def getSymbolAsStyle(symbol, stylesFolder):
+def getSymbolAsStyle(symbol, stylesFolder, layer_transparency):
     styles = []
-    alpha = symbol.alpha()
+    if layer_transparency == 0:
+        alpha = symbol.alpha()
+    else:
+        alpha = layer_transparency/float(100)
     for i in xrange(symbol.symbolLayerCount()):
         sl = symbol.symbolLayer(i)
         props = sl.properties()
