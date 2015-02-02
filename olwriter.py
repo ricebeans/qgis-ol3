@@ -201,8 +201,6 @@ def exportStyles(layers, folder):
     stylesFolder = os.path.join(folder, "styles")
     QDir().mkpath(stylesFolder)
     for layer in layers:
-        # Check for layer's transparency
-        layer_transparency = layer.layerTransparency()
         if layer.type() != layer.VectorLayer:
             continue
         labelsEnabled = str(layer.customProperty("labeling/enabled")).lower() == "true"
@@ -214,6 +212,7 @@ def exportStyles(layers, folder):
         defs = ""
         try:
             renderer = layer.rendererV2()
+            layer_transparency = layer.layerTransparency()
             if isinstance(renderer, QgsSingleSymbolRendererV2):
                 symbol = renderer.symbol()
                 style = "var style = " + getSymbolAsStyle(symbol, stylesFolder, layer_transparency)
