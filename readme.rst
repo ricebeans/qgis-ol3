@@ -42,6 +42,8 @@ Usage is documented `here <./doc/usage.rst>`_.
 JavaScript libraries used by exported page
 ==========================================
 
-- The generated code uses`OL3 <http://openlayers.org/>`_,
-`OL3 LayerSwitcher <https://github.com/walkermatt/ol3-layerswitcher/>`_
-and ` jQuery <http://jquery.com/>`_
+- The generated code uses:
+
+    - `OL3 <http://openlayers.org/>`_
+    - `OL3 LayerSwitcher <https://github.com/walkermatt/ol3-layerswitcher/>`_
+    - `jQuery <http://jquery.com/>`_
