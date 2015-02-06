@@ -9,7 +9,7 @@ Current version includes the following features:
 
 - Support for both raster and vector layers.
 
-- Support for WMS (if the service support EPSG:3857).
+- Support for WMS (if the service supports EPSG:3857).
 
 - Symbology exporting, including:
 
