@@ -95,6 +95,10 @@ class Ui_MainDialog(object):
         self.buttonSaveOL.setIcon(icon)
         self.buttonSaveOL.setObjectName(_fromUtf8("buttonSaveOL"))
         self.horizontalLayout_2.addWidget(self.buttonSaveOL)
+        self.buttonSaveLeaflet = QtGui.QPushButton(self.widget)
+        self.buttonSaveLeaflet.setIcon(icon)
+        self.buttonSaveLeaflet.setObjectName(_fromUtf8("buttonSaveLeaflet"))
+        self.horizontalLayout_2.addWidget(self.buttonSaveLeaflet)
         spacerItem = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
         self.horizontalLayout_2.addItem(spacerItem)
         self.buttonUpdateOL = QtGui.QPushButton(self.widget)
@@ -135,6 +139,7 @@ class Ui_MainDialog(object):
         self.paramsTreeOL.headerItem().setText(0, _translate("MainDialog", "Setting", None))
         self.paramsTreeOL.headerItem().setText(1, _translate("MainDialog", "Value", None))
         self.buttonSaveOL.setText(_translate("MainDialog", "Export as OpenLayers 3...", None))
+        self.buttonSaveLeaflet.setText(_translate("MainDialog", "Export as Leaflet...", None))
         self.buttonUpdateOL.setText(_translate("MainDialog", "Update preview", None))
         self.labelPreview.setText(_translate("MainDialog", "Preview", None))
 

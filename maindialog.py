@@ -26,6 +26,7 @@ import utils
 from configparams import paramsOL
 from collections import defaultdict
 from olwriter import writeOL
+from qgis2leaf_exec import *
 from qgis.utils import iface
 import webbrowser
 
@@ -40,7 +41,8 @@ class MainDialog(QDialog, Ui_MainDialog):
         self.populateLayers()
         self.populateConfigParams()
         self.buttonUpdateOL.clicked.connect(self.update)
-        self.buttonSaveOL.clicked.connect(self.save)
+        self.buttonSaveOL.clicked.connect(self.saveOL)
+        self.buttonSaveLeaflet.clicked.connect(self.saveLeaf)
         self.connect(self.labelPreview, SIGNAL("linkActivated(QString)"), self.labelLinkClicked)
 
     def labelLinkClicked(self, url):
@@ -114,13 +116,26 @@ class MainDialog(QDialog, Ui_MainDialog):
         self.preview.setUrl(QUrl(self.tempIndexFile()))
         self.labelPreview.setText('Preview &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <a href="open">Open in external browser</a>')
 
-    def save(self):
+    def saveOL(self):
         folder = QFileDialog.getExistingDirectory(self, "Save to directory", None,
                                                  QFileDialog.ShowDirsOnly | QFileDialog.DontResolveSymlinks);
         if folder:
             layers, groups, popup, visible = self.getLayersAndGroups()
             params = self.getParameters()
             writeOL(layers, groups, popup, visible, params, folder)
+            reply = QMessageBox.question(self, "OL3 map correctly exported",
+                "Do you want to open the resulting map in a web browser?",
+                QMessageBox.Yes | QMessageBox.No)
+            if reply == QMessageBox.Yes:
+                webbrowser.open_new_tab(os.path.join(folder, "index.html"))
+
+    def saveLeaf(self):
+        folder = QFileDialog.getExistingDirectory(self, "Save to directory", None,
+                                                 QFileDialog.ShowDirsOnly | QFileDialog.DontResolveSymlinks);
+        if folder:
+            layers, groups, popup, visible = self.getLayersAndGroups()
+            params = self.getParameters()
+            qgis2leaf_exec(layers, groups, popup, visible, params, folder)
             reply = QMessageBox.question(self, "OL3 map correctly exported",
                 "Do you want to open the resulting map in a web browser?",
                 QMessageBox.Yes | QMessageBox.No)
