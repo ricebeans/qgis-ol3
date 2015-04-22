@@ -140,7 +140,7 @@
                </property>
                <property name="icon">
                 <iconset resource="resources.qrc">
-                 <normaloff>:/plugins/qgis2ol/icons/ol.png</normaloff>:/plugins/qgis2ol/icons/ol.png</iconset>
+                 <normaloff>:/plugins/qgis2ol/icons/leaflet.png</normaloff>:/plugins/qgis2ol/icons/leaflet.png</iconset>
                </property>
               </widget>
              </item>
