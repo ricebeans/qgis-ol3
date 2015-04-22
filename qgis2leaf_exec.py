@@ -844,32 +844,34 @@ var exp_""" + safeLayerName + """JSON = new L.geoJson(exp_""" + safeLayerName + 
 					f5.write(new_pop)
 				f5.write("""
 """ + new_obj)
-				if visible == 'show all' and cluster_set == False:
-					f5.write("""
+				if visible == 'show all':
+					if cluster_set == False:
+						if i.geometryType() == 0:
+							f5.write("""
+//add comment sign to hide this layer on the map in the initial view.
+feature_group.addLayer(exp_"""+ safeLayerName + """JSON);""")
+						else:
+							f5.write("""
 //add comment sign to hide this layer on the map in the initial view.
 feature_group.addLayer(exp_""" + safeLayerName + """JSON);""")
-				if visible == 'show all' and cluster_set == True:
-					if i.geometryType() == 0:
+					else:
 						f5.write("""
 //add comment sign to hide this layer on the map in the initial view.
-cluster_group"""+ safeLayerName + """JSON.addTo(map);""")
-					if i.geometryType() != 0:
+cluster_group.addLayer(exp_""" + safeLayerName + """JSON);""")
+				if visible == 'show none':
+					if cluster_set == False:
+						if i.geometryType() == 0:
+							f5.write("""
+	//delete comment sign to show this layer on the map in the initial view.
+	//feature_group.addLayer(exp_"""+ safeLayerName + """JSON);""")
+						if i.geometryType() != 0:
+							f5.write("""
+	//delete comment sign to show this layer on the map in the initial view.
+	//feature_group.addLayer(exp_""" + safeLayerName + """JSON);""")
+					else:
 						f5.write("""
-//add comment sign to hide this layer on the map in the initial view.
-feature_group.addLayer(exp_""" + safeLayerName + """JSON);""")
-				if visible == 'show none' and cluster_set == False:
-					f5.write("""
-//delete comment sign to show this layer on the map in the initial view.
-//feature_group.addLayer(exp_""" + safeLayerName + """JSON);""")
-				if visible == 'show none' and cluster_set == True:
-					if i.geometryType() == 0:
-						f5.write("""
-//delete comment sign to show this layer on the map in the initial view.
-//cluster_group"""+ safeLayerName + """JSON.addTo(map);""")
-					if i.geometryType() != 0:
-						f5.write("""
-//delete comment sign to show this layer on the map in the initial view.
-//feature_group.addLayer(exp_""" + safeLayerName + """JSON);""")
+	//delete comment sign to show this layer on the map in the initial view.
+	//cluster_group.addLayer(exp_""" + safeLayerName + """JSON);""")
 				f5.close()
 		elif i.type() == 1:
 			if i.dataProvider().name() == "wms":
@@ -1027,10 +1029,10 @@ raster_group.addLayer(overlay_""" + safeLayerName + """);"""
 		safeLayerName = re.sub('[\W_]+', '', rawLayerName)
 		if i.type() == 0:
 			with open(outputIndex, 'a') as f7:
-				if cluster_set == False or i.geometryType() != 0:
-					new_layer = '"' + safeLayerName + '"' + ": exp_" + safeLayerName + """JSON,"""
 				if cluster_set == True and i.geometryType() == 0:
 					new_layer = '"' + safeLayerName + '"' + ": cluster_group"""+ safeLayerName + """JSON,"""
+				else:
+					new_layer = '"' + safeLayerName + '"' + ": exp_" + safeLayerName + """JSON,"""
 				f7.write(new_layer)
 				f7.close()
 		elif i.type() == 1:
@@ -1101,7 +1103,7 @@ raster_group.addLayer(overlay_""" + safeLayerName + """);"""
 	with open(outputIndex, 'a') as f12:
 		f12.write(end)
 		f12.close()
-	webbrowser.open(outputIndex)
+	#webbrowser.open(outputIndex)
 
 def buildPointWFS(layerName, layerSource, categoryStr, stylestr, cluster_set, cluster_num, visible):
 	scriptTag = re.sub('SRSNAME\=EPSG\:\d+', 'SRSNAME=EPSG:4326', layerSource)+"""&outputFormat=text%2Fjavascript&format_options=callback%3Aget"""+layerName+"""Json"""

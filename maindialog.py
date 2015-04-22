@@ -135,13 +135,13 @@ class MainDialog(QDialog, Ui_MainDialog):
         if folder:
             layers, groups, popup, visible = self.getLayersAndGroups()
             params = self.getParameters()
-            qgis2leaf_exec(layers, groups, popup, visible, params, folder)
+            qgis2leaf_exec("index.html", "", "", "", 600, 400, "canvas extent", "", layers, "show all", "", 0, 0, "", "", "", "", "", "", 15, "", "", "", 0)
             reply = QMessageBox.question(self, "OL3 map correctly exported",
                 "Do you want to open the resulting map in a web browser?",
                 QMessageBox.Yes | QMessageBox.No)
             if reply == QMessageBox.Yes:
                 webbrowser.open_new_tab(os.path.join(folder, "index.html"))
-
+#qgis2leaf_exec(outputProjectFileName, basemapName, basemapMeta, basemapAddress, width, height, extent, full, layer_list, visible, opacity_raster, encode2JSON, cluster_set, webpage_name, webmap_head,webmap_subhead, legend, locate, address, precision, labels, labelhover, matchCRS, selected)
 
 
     def getParameters(self):
