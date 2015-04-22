@@ -212,7 +212,7 @@ th {
 		safeLayerName = re.sub('[\W_]+', '', rawLayerName)
 		layerFileName = dataStore + os.sep + 'exp_' + safeLayerName + '.js'
 		for j in layer_list:
-			if safeLayerName == re.sub('[\W_]+', '', j):
+			if safeLayerName == re.sub('[\W_]+', '', j.name()):
 				if i.providerType() != 'WFS' or encode2JSON == True and i:
 					if i.type() ==0:
 						qgis.core.QgsVectorFileWriter.writeAsVectorFormat(i,layerFileName, 'utf-8', exp_crs, 'GeoJson', selected, layerOptions=["COORDINATE_PRECISION="+str(precision)])
@@ -339,7 +339,7 @@ th {
 		rawLayerName = i.name()
 		safeLayerName = re.sub('[\W_]+', '', rawLayerName)
 		for j in layer_list:
-			if safeLayerName == j:
+			if safeLayerName == j.name():
 				if i.type()==0:
 					with open(outputIndex, 'a') as f5:
 						#here comes the layer style
@@ -961,7 +961,7 @@ th {
 			rawLayerName = i.name()
 			safeLayerName = re.sub('[\W_]+', '', rawLayerName)
 			for j in layer_list:
-				if safeLayerName == j:
+				if safeLayerName == j.name():
 					if i.type() == 0:
 						fields = i.pendingFields() 
 						field_names = [field.name() for field in fields]
@@ -1033,7 +1033,7 @@ th {
 		safeLayerName = re.sub('[\W_]+', '', rawLayerName)
 		for j in layer_list:
 			if i.type() == 0:
-				if safeLayerName == re.sub('[\W_]+', '', j):
+				if safeLayerName == re.sub('[\W_]+', '', j.name()):
 					with open(outputIndex, 'a') as f7:
 						if cluster_set == False or i.geometryType() != 0:
 							new_layer = '"' + safeLayerName + '"' + ": exp_" + safeLayerName + """JSON,"""
@@ -1042,7 +1042,7 @@ th {
 						f7.write(new_layer)
 						f7.close()
 			elif i.type() == 1:
-				if safeLayerName == re.sub('[\W_]+', '', j):
+				if safeLayerName == re.sub('[\W_]+', '', j.name()):
 					with open(outputIndex, 'a') as f7:
 						new_layer = '"' + safeLayerName + '"' + ": overlay_" + safeLayerName + ""","""
 						f7.write(new_layer)
@@ -1069,7 +1069,7 @@ th {
 			safeLayerName = re.sub('[\W_]+', '', rawLayerName)
 			for j in layer_list:
 				if i.type() == 1:
-					if safeLayerName == re.sub('[\W_]+', '', j):
+					if safeLayerName == re.sub('[\W_]+', '', j.name()):
 						with open(outputIndex, 'a') as f10:
 							new_opc = """
 							overlay_""" + safeLayerName + """.setOpacity(value);"""
@@ -1096,7 +1096,8 @@ th {
 		}
 		map.on('locationfound', onLocationFound);
 		"""
-	if locate == False:
+
+	else:
 		end = ''
 	# let's close the file but ask for the extent of all layers if the user wants to show only this extent:
 	if extent == 'layer extent':
